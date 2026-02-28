@@ -50,7 +50,9 @@ struct Esp32St7789_240x240 {
       {
         40000000u,
         IScreen::Rotation::PortraitFlip,
-        255u
+        255u,
+        240u,
+        240u
       },
       {
         34,

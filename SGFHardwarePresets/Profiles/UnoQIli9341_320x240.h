@@ -35,7 +35,9 @@ struct UnoQIli9341_320x240 {
       {
         24000000u,
         IScreen::Rotation::Landscape,
-        255u
+        255u,
+        320u,
+        240u
       },
       {
         2,
