@@ -9,6 +9,22 @@ struct Esp32St7789_240x240 {
   using Display = FastST7789;
   using DisplayBusConfig = SPIESP32DisplayBus::Config;
   using PanelConfig = FastST7789::PanelConfig;
+  using RenderTarget = IRenderTarget;
+  using Screen = IScreen;
+
+  struct Runtime {
+    SGFHardware::HardwareProfile profile;
+    DisplayBus displayBus;
+    Display display;
+
+    Runtime()
+      : profile(Esp32St7789_240x240::hardwareProfile()),
+        displayBus(Esp32St7789_240x240::makeDisplayBusConfig()),
+        display(Esp32St7789_240x240::makeDisplay(displayBus)) {}
+
+    RenderTarget& renderTarget() { return display; }
+    Screen& screen() { return display; }
+  };
 
   static constexpr SGFHardware::BoardMeta meta = {
     "esp32-st7789-240x240",
@@ -31,17 +47,24 @@ struct Esp32St7789_240x240 {
   }
 
   static PanelConfig makePanelConfig() {
-    return FastST7789::makePanelConfig(
+    PanelConfig config = FastST7789::makePanelConfig(
       240,
       240,
       FastST7789::offset(0, 0),
       FastST7789::offset(0, 0),
       FastST7789::offset(0, 0),
       FastST7789::offset(0, 0));
+    config.colorOrder = 0;
+    config.invertColors = true;
+    return config;
   }
 
   static Display makeDisplay(DisplayBus& bus) {
     return Display(bus, makePanelConfig());
+  }
+
+  static Runtime makeRuntime() {
+    return Runtime();
   }
 
   static SGFHardware::HardwareProfile hardwareProfile() {
