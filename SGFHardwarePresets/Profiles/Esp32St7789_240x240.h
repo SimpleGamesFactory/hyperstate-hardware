@@ -2,12 +2,24 @@
 
 #include "SGF_ESP32.h"
 
+#ifndef SGF_ESP32_ST7789_240X240_SPI_HZ
+#define SGF_ESP32_ST7789_240X240_SPI_HZ 40000000u
+#endif
+
+#ifndef SGF_ESP32_ST7789_240X240_USE_DMA_BUS
+#define SGF_ESP32_ST7789_240X240_USE_DMA_BUS 0
+#endif
+
 namespace SGFHardwarePresets::Profiles {
 
 struct Esp32St7789_240x240 {
+#if SGF_ESP32_ST7789_240X240_USE_DMA_BUS
+  using DisplayBus = SPIESP32DisplayBusDMA;
+#else
   using DisplayBus = SPIESP32DisplayBus;
+#endif
   using Display = FastST7789;
-  using DisplayBusConfig = SPIESP32DisplayBus::Config;
+  using DisplayBusConfig = DisplayBus::Config;
   using PanelConfig = FastST7789::PanelConfig;
   using RenderTarget = IRenderTarget;
   using Screen = IScreen;
@@ -71,8 +83,8 @@ struct Esp32St7789_240x240 {
     return {
       meta,
       {
-        40000000u,
-        IScreen::Rotation::PortraitFlip,
+        SGF_ESP32_ST7789_240X240_SPI_HZ,
+        ScreenRotation::PortraitFlip,
         255u,
         240u,
         240u
