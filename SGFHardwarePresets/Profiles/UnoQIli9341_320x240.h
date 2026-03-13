@@ -54,7 +54,7 @@ struct UnoQIli9341_320x240 {
       meta,
       {
         24000000u,
-        IScreen::Rotation::Landscape,
+        ScreenRotation::Landscape,
         255u,
         320u,
         240u
